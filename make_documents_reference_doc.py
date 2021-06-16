@@ -104,10 +104,9 @@ def get_image_base64(image_path, max_size=None):
 
 def parse_docs_file(docsfile_path, root_dir, quiet):
     docsfile = load_json(docsfile_path)
-
     docsfile_reference = {}
-
     name_doc_pairs = []
+
     for name, doc in docsfile.items():
         if isinstance(doc['output_fields'], list):
             name_doc_pairs.append((name, doc))
@@ -120,7 +119,6 @@ def parse_docs_file(docsfile_path, root_dir, quiet):
     for name, doc in name_doc_pairs:
         output_fields = doc['output_fields']
         image_fields = []
-
         if isinstance(output_fields, dict):
             output_fields = doc['output_fields'][name]
 
@@ -145,12 +143,10 @@ def parse_docs_file(docsfile_path, root_dir, quiet):
 
         if '(documentation)' in doc:
             ret.update(doc['(documentation)'])
-
             if 'description' not in doc['(documentation)']:
                 print_warning(docsfile_path, 'no description in (documentation)', quiet)
         elif '(documentations)' in doc:
             ret.update(doc['(documentations)'][name])
-
             if 'description' not in doc['(documentations)'][name]:
                 print_warning(docsfile_path, 'no description in (documentations)[%s]' % name, quiet)
         else:
@@ -170,8 +166,7 @@ def parse_docs_file(docsfile_path, root_dir, quiet):
             sample_path = relative_join(template_config_path, template_config['(sample)'], root_dir)
             if isfile(sample_path):
                 ret['templates'][tpl_name]['sample'] = sample_path
-                ret['templates'][tpl_name]['sample_base64'] = get_image_base64(sample_path,
-                                                                               max_size=256)
+                ret['templates'][tpl_name]['sample_base64'] = get_image_base64(sample_path,max_size=256)
 
         docsfile_reference[name] = ret
 
@@ -185,110 +180,11 @@ def generate_documents_reference_html(countries, docs, embed_images):
 
     with tag('html'):
         with tag('head'):
+            doc.asis('<link rel="stylesheet" href="./css/style.css">')
             with tag('title'):
                 text('Smart ID Engine Documents Reference')
-
             with tag('script'):
                 doc.asis('function topFunction() { document.body.scrollTop = 0; document.documentElement.scrollTop = 0;}')
-
-            with tag('style'):
-                text('''
-                table {
-                    border: 1px solid;
-                    border-collapse: collapse;
-                    table-layout: auto;
-                    width: 100%;
-                }
-                
-                th, td {
-                    border: 1px solid;
-                    border-collapse: collapse;
-                    text-align: left;
-                    padding: 8px;
-                    white-space:pre;
-                }
-                
-                tr:nth-child(odd) {
-                    background-color: #dddddd;
-                }
-                
-                th {
-                    background-color: #a3e0d9;
-                    # color: #eeeeee;
-                }
-                
-                .button_top {
-                    width:50px;
-                    border:2px solid #ccc;
-                    background:#f7f7f7;
-                    text-align:center;
-                    padding:10px;
-                    position:fixed;
-                    bottom:50px;
-                    right:50px;
-                    cursor:pointer;
-                    color:#333;
-                    font-size:12px;
-                    border-radius: 5px;
-                    -moz-border-radius: 5px;
-                    -webkit-border-radius: 5px;
-                    -khtml-border-radius: 5px;
-                }
-
-                .list3b {
-                    list-style: none;
-                    counter-reset: li;
-                    -webkit-column-count: 4;
-                    -moz-column-count: 4;
-                    column-count: 4;
-                }  
-
-                .list3b ul {
-                    margin-bottom: 40px;
-                }  
-
-                .list3b a {
-                    text-align: left;
-                    font-size: 18px;
-                    font-weight: bold;
-                    color: #a6a6a6;
-                    text-decoration: none;
-                    -webkit-transition-duration: 0.3s;
-                    transition-duration: 0.3s;
-                } 
-
-                .list3b li {
-                    position: relative;
-                    padding: 8px 8px 8px 8px;
-                    margin:12px 0 12px 80px;
-                    -webkit-transition-duration: 0.3s;
-                    transition-duration: 0.3s;
-                }
-
-                .list3b li:before {
-                    position: absolute;
-                    left:-50px;
-                    width:45px;
-                    text-align:right;
-                    font-size: 18px;
-                    font-weight: bold;
-                    color: #a6a6a6;
-                    counter-increment: li;
-                    content: counter(li);
-                    -webkit-transition-duration: 0.3s;
-                    transition-duration: 0.3s;
-                    -webkit-box-sizing: border-box;
-                    -moz-box-sizing: border-box;
-                    box-sizing: border-box;        
-                }
-                .list3b li:hover:before {
-                    color: #6ebfb4;
-                }
-
-                .list3b a:hover {
-                    color: #6ebfb4;
-                }
-                ''')
         
         with tag('body'):
             with tag('input', klass='button_top', type="button", name="top", value="Top", onclick="topFunction()"):
@@ -298,7 +194,6 @@ def generate_documents_reference_html(countries, docs, embed_images):
                 for country in sorted(countries):
                     with tag('li'):
                         with tag('a', href='#'+country):
-                            country_code_href = ""
                             if country not in special_doc:
                                 country_code_href = pycountry.countries.get(alpha_3=country).name
                             else:
@@ -323,7 +218,6 @@ def generate_documents_reference_html(countries, docs, embed_images):
                     with tag('tr'):
                         with tag('td', colspan="7", style="font-size: 18px; text-align:center; font-weight: bold;"):
                             with tag('a', name=country):
-                                country_code = ""
                                 if country not in special_doc:
                                     country_code = pycountry.countries.get(alpha_3=country).name
                                 else:
@@ -364,7 +258,7 @@ def generate_documents_reference_html(countries, docs, embed_images):
                                         if not isinstance(prado_links, list):
                                             prado_links = [prado_links]
                                         for i, prado_link in enumerate(prado_links):
-                                            with tag('a', href=prado_link, style="color: #4e7470; text-decoration: none; ", onmouseover ="this.style.color='#6ebfb4';", onmouseout ="this.style.color='#4e7470';"):
+                                            with tag('a', href=prado_link, style = "color: #4e7470; text-decoration: none;", onmouseover = "this.style.color='#6ebfb4';", onmouseout = "this.style.color='#4e7470';"):
                                                 text('PRADO link')
                                             text('\n')
                                         json_row['prado_links'] = prado_links
@@ -393,10 +287,6 @@ def generate_documents_reference_html(countries, docs, embed_images):
                                             with tag('img',
                                                      src=src_suffix,
                                                      title=tpl_name,
-                                                     # style='''
-                                                     #    max-width: 80%;
-                                                     #    max-height: 30%;
-                                                     # '''
                                                      ):
                                                 text('\n')
                                         else:

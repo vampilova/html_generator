@@ -1,0 +1,96 @@
+table {
+    border: 1px solid;
+    border-collapse: collapse;
+    table-layout: auto;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid;
+    border-collapse: collapse;
+    text-align: left;
+    padding: 8px;
+    white-space:pre;
+}
+
+tr:nth-child(odd) {
+    background-color: #dddddd;
+}
+
+th {
+    background-color: #a3e0d9;
+    # color: #eeeeee;
+}
+
+.button_top {
+    width:50px;
+    border:2px solid #ccc;
+    background:#f7f7f7;
+    text-align:center;
+    padding:10px;
+    position:fixed;
+    bottom:50px;
+    right:50px;
+    cursor:pointer;
+    color:#333;
+    font-size:12px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+}
+
+.list3b {
+    list-style: none;
+    counter-reset: li;
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+}
+
+.list3b ul {
+    margin-bottom: 40px;
+}
+
+.list3b a {
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+    color: #a6a6a6;
+    text-decoration: none;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.list3b li {
+    position: relative;
+    padding: 8px 8px 8px 8px;
+    margin:12px 0 12px 80px;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.list3b li:before {
+    position: absolute;
+    left:-50px;
+    width:45px;
+    text-align:right;
+    font-size: 18px;
+    font-weight: bold;
+    color: #a6a6a6;
+    counter-increment: li;
+    content: counter(li);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;        
+}
+
+.list3b li:hover:before {
+    color: #6ebfb4;
+}
+
+.list3b a:hover {
+    color: #6ebfb4;
+}
